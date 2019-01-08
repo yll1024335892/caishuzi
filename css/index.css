@@ -1,0 +1,98 @@
+*{padding: 0px; margin: 0px; font-size: 12px;}
+#contain,#res{ width: 980px; margin: 0 auto;}
+.lot-table {
+    width: 100%;
+    text-align: center;
+}
+table {
+    border-collapse: collapse;
+}
+.lot-table .head {
+    height: 40px;
+    background-color: #f2f2f2;
+}
+.lot-table .head td {
+    zoom: 1;
+}
+.lot-table td {
+    height: 37px;
+    border: solid 1px #ccc;
+}
+.lot-table .even {
+    background-color: #f9f9f9;
+    font-size: 13px;
+}
+.lot-table .odd {
+    background-color: #fff;
+    font-size: 13px;
+}
+#history .p {
+    float: left;
+    padding-left: 12px;
+    font-family: "微软雅黑";
+}
+#history p {
+    line-height: 35px;
+}
+
+#history .t {
+    margin-right: 12px;
+    color: #6f8a97;
+    float: right;
+    font-family: "微软雅黑";
+}
+.nums,.nums-index {
+    width: 344px;
+    padding-left: 8px;
+}
+.nums i {
+    background: url(../img/pk10-nums.gif) no-repeat;
+    width: 25px;
+    height: 25px;
+    float: left;
+    padding-right: 4px;
+    padding-left: 5px;
+}
+.nums-index i{
+    width: 25px;
+    height: 25px;
+    float: left;
+    padding-right: 4px;
+    padding-left: 5px;
+    font-style: normal;
+    font-size: 14px;
+}
+.lot-nums .no5, .lot-table .pk-no5 {
+    background-position: 0px -108px !important;
+}
+.lot-nums .no3, .lot-table .pk-no3 {
+    background-position: 0px -54px !important;
+}
+.lot-nums .no9, .lot-table .pk-no9 {
+    background-position: 0px -216px !important;
+}
+.lot-nums .no2, .lot-table .pk-no2 {
+    background-position: 0px -27px !important;
+}
+.lot-nums .no8, .lot-table .pk-no8 {
+    background-position: 0px -189px !important;
+}
+.lot-nums .no4, .lot-table .pk-no4 {
+    background-position: 0px -81px !important;
+}
+.lot-nums .no10, .lot-table .pk-no10 {
+    background-position: 0px -243px !important;
+}
+.lot-nums .no6, .lot-table .pk-no6 {
+    background-position: 0px -135px !important;
+}
+.lot-nums .no7, .lot-table .pk-no7 {
+    background-position: 0px -162px !important;
+}
+.lot-nums .no1, .lot-table .pk-no1 {
+    background-position: 0px 0px !important;
+}
+.lot-nums .no1, .lot-table .pk-noo {
+    background-position: -1000px -1000px !important;
+    line-height: 30px;
+}

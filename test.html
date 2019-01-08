@@ -1,0 +1,44 @@
+<html>
+
+  <head>
+        <title>按钮控制播放音乐</title>
+         <script src="jquery-1.8.3.min.js"></script>
+      </head>
+<style type="text/css">
+        .pause {background-position: 0 bottom;}
+        .mscBtn {height: 50px;background: red ;display: block;}
+</style>
+<script type="text/javascript">
+    $(function(){
+        $isPay=false;
+        $isOrgin=[];
+
+
+        function xx(){
+            console.log("enter");
+            $arr=['1','2'];
+            if($isOrgin==$arr){
+                console.log("第一次");
+            }
+            $isOrgin=$arr;
+        }
+        $("#audioBtn").click(function () {
+
+            setInterval(function () {
+                xx();
+            },1000)
+           // console.log($isOrgin);
+        });
+        // var music = document.getElementById("bgMusic");
+        // $("#audioBtn").click(function(){
+        //     if(music.paused){music.play();
+        //         $("#audioBtn").removeClass("pause").addClass("play");
+        //     }else{music.pause();
+        //         $("#audioBtn").removeClass("play").addClass("pause");}});
+    });
+</script>
+<body>
+    <a class="mscBtn" id="audioBtn" style="cursor:pointer;">1231</a>
+    <audio id="bgMusic" src="./img/music.wav" autoplay="autoplay"></audio>
+</body>
+<html>
