@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Pk10</title>
+    <title>幸运飞艇</title>
     <script type="text/javascript" src="jquery-1.8.3.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="css/index2.css"/>
 </head>
 <body>
 <button id="hand-refresh">手动再次刷新</button><button id="jiexi">解析</button><button id="sf">二组分析反卜法</button>
@@ -95,6 +95,8 @@
         function playMusic(){
             if(music.paused){
                 music.play();
+            }else {
+                music.play();
             }
         }
 
@@ -109,7 +111,7 @@
             analysis();
         });
         function parseData() {
-            $("#contain").load("https://csj.1396j.com/pk10/kaijiang .lot-table",function () {
+            $("#contain").load("https://csj.1396j.com/xyft/kaijiang .lot-table",function () {
                 analysis();
             });
         }
@@ -121,7 +123,8 @@
             for($i=1;$i<4;$i++){
                 $tdVal=$("#contain tr").eq($i).find('.nums');
                 for ($j=0;$j<10;$j++){
-                    $realV= $tdVal.find("i").eq($j).attr("data-no");
+                    $realV= $tdVal.find("i").eq($j).attr("class");
+                    $realV=$realV.substr(6);
                     if($i===1){
                         $arr1[$j]=$realV;
                     }else if($i===2){
@@ -131,8 +134,7 @@
                     }
                 }
             }
-
-            if($arr1.sort().toString()!=$tempArr.sort().toString()){
+            if( $tempArr.sort().toString() != $arr1.sort().toString()){
                 playMusic();
                 console.log("警报出来");
             }
@@ -178,7 +180,6 @@
                     $h2v=10-$h2%10;
                     if($h1v===$h2v && ($h1+$h1v)%10===0){
                         $(".res-first td.nums span").eq($i+2+1).removeClass().addClass("pk-no"+$h1v).attr("data-no",$h1v).empty();
-                        console.log("二组分析反卜法：第-",$i+2+1+1,"-",$h1v);
                     }
                 }
             }
@@ -194,7 +195,6 @@
                     $hh2v=10-$hh2%10;
                     if($hh1v===$hh2v && ($hh1+$hh1v)%10===0){
                         $(".res-two td.nums span").eq($i+1).removeClass().addClass("pk-no"+$hh1v).attr("data-no",$hh1v).empty();
-                        console.log("二组分析卜法：第-",$i+1+1,"-",$hh1v);
                     }
                 }
             }
@@ -214,12 +214,10 @@
                         if($i!=7){
                             if($hh1v===parseInt($ar3[$i]) || $hh1v===parseInt($ar3[$i+3])){
                                 $(".res-three td.nums span").eq($i+2+1).removeClass().addClass("pk-no"+$hh1v).attr("data-no",$hh1v).empty();
-                                console.log("三组分析反卜法：第-",$i+2+1+1,"-",$hh1v);
                             }
                         }else {
                             if($hh1v===parseInt($ar3[$i])){
                                 $(".res-three td.nums span").eq($i+2+1).removeClass().addClass("pk-no"+$hh1v).attr("data-no",$hh1v).empty();
-                                console.log("三组分析反卜法：第-",$i+2+1+1,"-",$hh1v);
                             }
                         }
                     }
@@ -241,12 +239,10 @@
                         if($i!=7){
                             if($hh1v===parseInt($ar3[$i]) || $hh1v===parseInt($ar3[$i+3])){
                                 $(".res-four td.nums span").eq($i+1).removeClass().addClass("pk-no"+$hh1v).attr("data-no",$hh1v).empty();
-                                console.log("三组分析卜法：第-",$i+1+1,"-",$hh1v);
                             }
                         }else {
                             if($hh1v===parseInt($ar3[$i])){
                                 $(".res-four td.nums span").eq($i+1).removeClass().addClass("pk-no"+$hh1v).attr("data-no",$hh1v).empty();
-                                console.log("三组分析卜法：第-",$i+1+1,"-",$hh1v);
                             }
                         }
                     }

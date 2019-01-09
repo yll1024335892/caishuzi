@@ -45,7 +45,7 @@ table {
     width: 344px;
     padding-left: 8px;
 }
-.nums span ,.nums i {
+.nums i,.nums span {
     background: url(../img/pk10-nums.gif) no-repeat;
     width: 25px;
     height: 25px;
@@ -59,35 +59,37 @@ table {
     float: left;
     padding-right: 4px;
     padding-left: 5px;
+    font-style: normal;
+    font-size: 14px;
 }
-.lot-nums .no5, .lot-table .pk-no5 {
+.lot-nums .no5, .lot-table .lot-no5 {
     background-position: 0px -108px !important;
 }
-.lot-nums .no3, .lot-table .pk-no3 {
+.lot-nums .no3, .lot-table .lot-no3 {
     background-position: 0px -54px !important;
 }
-.lot-nums .no9, .lot-table .pk-no9 {
+.lot-nums .no9, .lot-table .lot-no9 {
     background-position: 0px -216px !important;
 }
-.lot-nums .no2, .lot-table .pk-no2 {
+.lot-nums .no2, .lot-table .lot-no2 {
     background-position: 0px -27px !important;
 }
-.lot-nums .no8, .lot-table .pk-no8 {
+.lot-nums .no8, .lot-table .lot-no8 {
     background-position: 0px -189px !important;
 }
-.lot-nums .no4, .lot-table .pk-no4 {
+.lot-nums .no4, .lot-table .lot-no4 {
     background-position: 0px -81px !important;
 }
-.lot-nums .no10, .lot-table .pk-no10 {
+.lot-nums .no10, .lot-table .lot-no10 {
     background-position: 0px -243px !important;
 }
-.lot-nums .no6, .lot-table .pk-no6 {
+.lot-nums .no6, .lot-table .lot-no6 {
     background-position: 0px -135px !important;
 }
-.lot-nums .no7, .lot-table .pk-no7 {
+.lot-nums .no7, .lot-table .lot-no7 {
     background-position: 0px -162px !important;
 }
-.lot-nums .no1, .lot-table .pk-no1 {
+.lot-nums .no1, .lot-table .lot-no1 {
     background-position: 0px 0px !important;
 }
 .lot-nums .no1, .lot-table .pk-noo {
