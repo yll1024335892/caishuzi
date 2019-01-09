@@ -95,6 +95,8 @@
         function playMusic(){
             if(music.paused){
                 music.play();
+            }else {
+                music.play();
             }
         }
 
@@ -204,22 +206,24 @@
         //        三组分析反卜法
         function reThreeBu($ar1,$ar2,$ar3) {
             $(".res-three td.nums span").attr("data-no","*").removeClass().addClass("pk-noo");
-            for($i=0;$i<10;$i++){
+            for ($i=0;$i<10;$i++){
                 if($i+2<10){
-                    $hh1= parseInt($ar2[$i])+parseInt($ar1[$i]);
-                    $hh1v=10-$hh1%10;
-                    $hh2= parseInt($ar2[$i+2])+parseInt($ar1[$i+1]);
-                    $hh2v=10-$hh2%10;
-                    if($hh1v===$hh2v && ($hh1+$hh1v)%10===0){
-                        if($i!=7){
-                            if($hh1v===parseInt($ar3[$i]) || $hh1v===parseInt($ar3[$i+3])){
-                                $(".res-three td.nums span").eq($i+2+1).removeClass().addClass("pk-no"+$hh1v).attr("data-no",$hh1v).empty();
-                                console.log("三组分析反卜法：第-",$i+2+1+1,"-",$hh1v);
+                    $h1= parseInt($ar2[$i])+parseInt($ar1[$i+1]);
+                    $h1v=10-$h1%10;
+                    $h2= parseInt($ar2[$i+2])+parseInt($ar1[$i+2]);
+                    $h2v=10-$h2%10;
+                    if($h1v===$h2v && ($h1+$h1v)%10===0){
+                        if($i==1){
+                            if(parseInt($ar3[$i-1])===$h1v){
+                                $(".res-three td.nums span").eq($i+2).removeClass().addClass("pk-no"+$h1v).attr("data-no",$h1v).empty();
+                            }
+                        }else if($i==0){
+                            if(parseInt($ar3[$i+2])===$h1v){
+                                $(".res-three td.nums span").eq($i+2).removeClass().addClass("pk-no"+$h1v).attr("data-no",$h1v).empty();
                             }
                         }else {
-                            if($hh1v===parseInt($ar3[$i])){
-                                $(".res-three td.nums span").eq($i+2+1).removeClass().addClass("pk-no"+$hh1v).attr("data-no",$hh1v).empty();
-                                console.log("三组分析反卜法：第-",$i+2+1+1,"-",$hh1v);
+                            if(parseInt($ar3[$i+2])===$h1v || parseInt($ar3[$i-1])===$h1v){
+                                $(".res-three td.nums span").eq($i+2).removeClass().addClass("pk-no"+$h1v).attr("data-no",$h1v).empty();
                             }
                         }
                     }
@@ -301,6 +305,12 @@
             $a1=['8','4','5','7','1','6','3','2','10','9'];
             $a2=['10','7','3','5','8','4','6','2','1','9'];
             $a3=['8','6','3','1','9','4','7','10','2','5'];
+
+            // $a1=['9','7','3','6','2','5','4','10','8','1'];
+            // $a2=['9','4','7','10','6','2','5','1','8','3'];
+            // $a3=['7','3','2','9','5','1','10','6','4','8'];
+
+
             for ($i=0;$i<10;$i++){
                 if($i+2<10){
                     $h1= parseInt($a2[$i])+parseInt($a1[$i+1]);
@@ -310,7 +320,11 @@
                     if($h1v===$h2v && ($h1+$h1v)%10===0){
                         if($i==1){
                             if(parseInt($a3[$i-1])===$h1v){
-                                console.log("成功",$i,"值",$h1v);
+                                console.log("成功",$i,"第",$i+3,"值",$h1v);
+                            }
+                        }else if($i==0){
+                            if(parseInt($a3[$i+2])===$h1v){
+                                console.log("成功",$i);
                             }
                         }else {
                             if(parseInt($a3[$i+2])===$h1v || parseInt($a3[$i-1])===$h1v){
