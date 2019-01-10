@@ -10,7 +10,7 @@
 <button id="hand-refresh">手动再次刷新</button><button id="jiexi">解析</button><button id="sf">二组分析反卜法</button>
 <button id="st">二组分析卜法</button><button id="sff">三组分析反卜法</button><button id="stt">三组分析卜法</button>
 
-<button id="get-data">数据获取</button><button id="audioBtn">music</button>
+<button id="get-data">数据获取</button>
 <div id="res">
     <table class="lot-table" style="width: 515px;">
         <tr>
@@ -49,6 +49,21 @@
             <span class="pk-noo" data-no="*">*</span>
         </td>
     </tr>
+        <tr class="res-ren">
+            <td width="160px">二组人字法</td>
+            <td width="350px" class="nums">
+                <span class="pk-noo" data-no="*">*</span>
+                <span class="pk-noo" data-no="*">*</span>
+                <span class="pk-noo" data-no="*">*</span>
+                <span class="pk-noo" data-no="*">*</span>
+                <span class="pk-noo" data-no="*">*</span>
+                <span class="pk-noo" data-no="*">*</span>
+                <span class="pk-noo" data-no="*">*</span>
+                <span class="pk-noo" data-no="*">*</span>
+                <span class="pk-noo" data-no="*">*</span>
+                <span class="pk-noo" data-no="*">*</span>
+            </td>
+        </tr>
     <tr class="res-three">
         <td width="160px">三组分析反卜法</td>
         <td width="350px" class="nums">
@@ -93,11 +108,7 @@
         var music = document.getElementById("bgMusic");
 
         function playMusic(){
-            if(music.paused){
-                music.play();
-            }else {
-                music.play();
-            }
+
         }
 
        $("#hand-refresh").click(function () {
@@ -134,13 +145,9 @@
                     }
                 }
             }
-            if( $tempArr.sort().toString() != $arr1.sort().toString()){
-                playMusic();
-                console.log("警报出来");
-            }
-            $tempArr=$arr1;
             reTwoBu($arr1,$arr2);
             twoBu($arr1,$arr2);
+            towRen($arr1,$arr2);
             reThreeBu($arr1,$arr2,$arr3);
             threeBu($arr1,$arr2,$arr3);
         }
@@ -179,7 +186,7 @@
                     $h2= parseInt($ar2[$i+2])+parseInt($ar1[$i+2]);
                     $h2v=10-$h2%10;
                     if($h1v===$h2v && ($h1+$h1v)%10===0){
-                        $(".res-first td.nums span").eq($i+2+1).removeClass().addClass("pk-no"+$h1v).attr("data-no",$h1v).empty();
+                        $(".res-first td.nums span").eq($i+2).removeClass().addClass("lot-no"+$h1v).attr("data-no",$h1v).empty();
                     }
                 }
             }
@@ -194,30 +201,49 @@
                     $hh2= parseInt($ar2[$i+2])+parseInt($ar1[$i+1]);
                     $hh2v=10-$hh2%10;
                     if($hh1v===$hh2v && ($hh1+$hh1v)%10===0){
-                        $(".res-two td.nums span").eq($i+1).removeClass().addClass("pk-no"+$hh1v).attr("data-no",$hh1v).empty();
+                        $(".res-two td.nums span").eq($i).removeClass().addClass("lot-no"+$hh1v).attr("data-no",$hh1v).empty();
                     }
                 }
             }
 
         }
 
+        function towRen($ar1,$ar2) {//二组人字法
+            $(".res-ren td.nums span").attr("data-no","*").removeClass().addClass("pk-noo");
+            for($i=0;$i<10;$i++){
+                if($i+4<10){
+                    $hh1= parseInt($ar2[$i])+parseInt($ar1[$i+1]);
+                    $hh1v=10-$hh1%10;
+                    $hh2= parseInt($ar2[$i+4])+parseInt($ar1[$i+3]);
+                    $hh2v=10-$hh2%10;
+                    if($hh1v===$hh2v && ($hh1+$hh1v)%10===0){
+                        $(".res-ren td.nums span").eq($i+2).removeClass().addClass("lot-no"+$hh1v).attr("data-no",$hh1v).empty();
+                    }
+                }
+            }
+        }
+
         //        三组分析反卜法
         function reThreeBu($ar1,$ar2,$ar3) {
             $(".res-three td.nums span").attr("data-no","*").removeClass().addClass("pk-noo");
-            for($i=0;$i<10;$i++){
+            for ($i=0;$i<10;$i++){
                 if($i+2<10){
-                    $hh1= parseInt($ar2[$i])+parseInt($ar1[$i]);
-                    $hh1v=10-$hh1%10;
-                    $hh2= parseInt($ar2[$i+2])+parseInt($ar1[$i+1]);
-                    $hh2v=10-$hh2%10;
-                    if($hh1v===$hh2v && ($hh1+$hh1v)%10===0){
-                        if($i!=7){
-                            if($hh1v===parseInt($ar3[$i]) || $hh1v===parseInt($ar3[$i+3])){
-                                $(".res-three td.nums span").eq($i+2+1).removeClass().addClass("pk-no"+$hh1v).attr("data-no",$hh1v).empty();
+                    $h1= parseInt($ar2[$i])+parseInt($ar1[$i+1]);
+                    $h1v=10-$h1%10;
+                    $h2= parseInt($ar2[$i+2])+parseInt($ar1[$i+2]);
+                    $h2v=10-$h2%10;
+                    if($h1v===$h2v && ($h1+$h1v)%10===0){
+                        if($i==1){
+                            if(parseInt($ar3[$i-1])===$h1v){
+                                $(".res-three td.nums span").eq($i+2).removeClass().addClass("lot-no"+$h1v).attr("data-no",$h1v).empty();
+                            }
+                        }else if($i==0){
+                            if(parseInt($ar3[$i+2])===$h1v){
+                                $(".res-three td.nums span").eq($i+2).removeClass().addClass("lot-no"+$h1v).attr("data-no",$h1v).empty();
                             }
                         }else {
-                            if($hh1v===parseInt($ar3[$i])){
-                                $(".res-three td.nums span").eq($i+2+1).removeClass().addClass("pk-no"+$hh1v).attr("data-no",$hh1v).empty();
+                            if(parseInt($ar3[$i+2])===$h1v || parseInt($ar3[$i-1])===$h1v){
+                                $(".res-three td.nums span").eq($i+2).removeClass().addClass("lot-no"+$h1v).attr("data-no",$h1v).empty();
                             }
                         }
                     }
@@ -238,11 +264,11 @@
                     if($hh1v===$hh2v && ($hh1+$hh1v)%10===0){
                         if($i!=7){
                             if($hh1v===parseInt($ar3[$i]) || $hh1v===parseInt($ar3[$i+3])){
-                                $(".res-four td.nums span").eq($i+1).removeClass().addClass("pk-no"+$hh1v).attr("data-no",$hh1v).empty();
+                                $(".res-four td.nums span").eq($i).removeClass().addClass("lot-no"+$hh1v).attr("data-no",$hh1v).empty();
                             }
                         }else {
                             if($hh1v===parseInt($ar3[$i])){
-                                $(".res-four td.nums span").eq($i+1).removeClass().addClass("pk-no"+$hh1v).attr("data-no",$hh1v).empty();
+                                $(".res-four td.nums span").eq($i).removeClass().addClass("lot-no"+$hh1v).attr("data-no",$hh1v).empty();
                             }
                         }
                     }

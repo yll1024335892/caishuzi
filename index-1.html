@@ -108,11 +108,7 @@
         var music = document.getElementById("bgMusic");
 
         function playMusic(){
-            if(music.paused){
-                music.play();
-            }else {
-                music.play();
-            }
+
         }
 
        $("#hand-refresh").click(function () {
@@ -154,11 +150,7 @@
             towRen($arr1,$arr2);
             reThreeBu($arr1,$arr2,$arr3);
             threeBu($arr1,$arr2,$arr3);
-            if($arr1.sort().toString()!=$tempArr.sort().toString()){
-                playMusic();
-                console.log("警报出来");
-            }
-            $tempArr=$arr1;
+
         }
 
         $("#jiexi").click(function () {
