@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <title>Pk10</title>
     <script type="text/javascript" src="jquery-1.8.3.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="css/index11.css"/>
 </head>
 <body>
 <button id="hand-refresh">手动再次刷新</button><button id="jiexi">解析</button><button id="sf">二组分析反卜法</button>
 <button id="st">二组分析卜法</button><button id="sff">三组分析反卜法</button><button id="stt">三组分析卜法</button>
 <button id="ren">人字法</button>
 <button id="get-data">数据获取</button>
-<div id="res">
-    <table class="lot-table" style="width: 515px;">
+
+<p>域名：https://www.1396j.com/pk10/kaijiang</p>
+<div id="res" >
+    <table class="lot-table" style="width: 588px;">
         <tr>
             <td width="160px">类型</td>
             <td width="350px" class="nums-index">
@@ -20,7 +22,7 @@
             </td>
         </tr>
     <tr class="res-first">
-        <td width="160px">二组分析反卜法</td>
+        <td width="176px">二组分析反卜法</td>
         <td width="350px" class="nums">
             <span class="pk-noo" data-no="*">*</span>
             <span class="pk-noo" data-no="*">*</span>
@@ -96,7 +98,7 @@
     </tr>
     </table>
 </div>
-<div id="contain"></div>
+<div id="contain" class="lotteryPublic_tableBlock"></div>
 
 <audio id="bgMusic" src="./img/music.wav"  autoplay="autoplay"></audio>
 <script type="text/javascript">
@@ -115,15 +117,17 @@
            parseData();
        });
 
+	
         setInterval(function () {
             parseData();
         },10000);
+		
 
         $("#get-data").click(function(){
             analysis();
         });
         function parseData() {
-            $("#contain").load("https://csj.1396j.com/pk10/kaijiang .lot-table",function () {
+            $("#contain").load("https://www.1396j.com/pk10/kaijiang #history",function () {
                 analysis();
             });
         }
@@ -132,17 +136,15 @@
             $arr1=[];
             $arr2=[];
             $arr3=[];
-            for($i=1;$i<4;$i++){
-                $tdVal=$("#contain tr").eq($i).find('.nums');
-				console.log($tdVal);
+            for($i=0;$i<3;$i++){
+                $tdVal=$("#contain tbody tr").eq($i).find('.number_pk10');
                 for ($j=0;$j<10;$j++){
-                    $realV= $tdVal.find("i").eq($j).attr("data-no");
-                    if($i===1){
+                    $realV= $tdVal.find("span").eq($j).attr("data-number");
+                    if($i===0){
                         $arr1[$j]=$realV;
-                    }
-					else if($i===2){
+                    }else if($i===1){
                         $arr2[$j]=$realV;
-                    }else if($i===3){
+                    }else if($i===2){
                         $arr3[$j]=$realV;
                     }
                 }
