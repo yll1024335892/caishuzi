@@ -17,11 +17,11 @@ table {
 
 .lotteryPublic_tableBlock .number_pk10 span.num01 {
     font-size: 0;
-    background-position: -26 0;
+    background-position: 0 0;
 }
 .lotteryPublic_tableBlock .number_pk10 span.num02 {
     font-size: 0;
-    background-position: -130px 0;
+    background-position: -26px 0;
 }
 .lotteryPublic_tableBlock .number_pk10 span.num03 {
     font-size: 0;
