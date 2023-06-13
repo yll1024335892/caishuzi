@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>无语</title>
+    <link rel="stylesheet" href="./css/index.css">
+    <script type="text/javascript" src="./javascript/jquery-1.11.3.min.js"></script>
+    <!--开发环境使用-->
+    <script src="./javascript/vue.js"></script>
+    <!--生产环境使用-->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+</head>
+
+<body>
+    <div id="app">
+        <audio controls="controls" id="my_audio" src="./images/tip.mp3" style="display:none;"></audio>
+        <div class="header">
+            <div class="one">
+                <span class="btn" :class="{'active':playStr=='pkt'}" @click.stop="onChangeType('pkt')">幸运</span>
+                <span class="btn" :class="{'active':playStr=='pka'}" @click.stop="onChangeType('pka')">澳洲</span>
+                <span class="btn" @click.stop="isPrediction=!isPrediction" :class="{'active':isPrediction}">关/开</span>
+                <span class="btn" @click.stop="isRtb=!isRtb" :class="{'active':isPrediction && isRtb}">二反</span>
+                <span class="btn" @click.stop="istb=!istb" :class="{'active':isPrediction && istb}">二正</span>
+                <span class="btn" @click.stop="isRthb=!isRthb" :class="{'active':isPrediction && isRthb}">三反</span>
+                <span class="btn" @click.stop="isthb=!isthb" :class="{'active':isPrediction && isthb}">三正</span>
+                <span class="btn btn-t" @click.stop="onRepair()">补漏</span>
+            </div>
+            <div class="two">
+                <span class="btn" @click.stop="onRefresh()">强制刷新</span>
+                <span class="btn" @click.stop="onRefreshThree()">强制更新近三天数据</span>
+                <span class="btn" @click.stop="istbRen=!istbRen" :class="{'active':isPrediction && istbRen}">二人</span>
+                <span class="btn" @click.stop="isthbRen=!isthbRen"
+                    :class="{'active':isPrediction && isthbRen}">三人</span>
+            </div>
+
+        </div>
+        <div class="content">
+            <div class="item" v-for="(item,index) in tpData" :key="index" @click.stop="onFold()">
+                <span class="time">{{item.cycleid_time}}<br />{{item.cycleid}}期</span>
+                <span class="kj">
+                    <div v-if="isPrediction && isRtb">
+                        <i :class="[`n_${itemrtb}`]" v-for="(itemrtb,indexrtb) in item.rtb"
+                            :key="indexrtb">{{itemrtb}}</i>
+                    </div>
+                    <div v-if="isPrediction && istb">
+                        <i :class="[`n_${itemtb}`]" v-for="(itemtb,indextb) in item.tb" :key="indextb">{{itemtb}}</i>
+                    </div>
+                    <div v-if="isPrediction && isRthb">
+                        <i :class="[`n_${itemrthb}`]" v-for="(itemrthb,indexrthb) in item.rthb"
+                            :key="indexrthb">{{itemrthb}}</i>
+                    </div>
+                    <div v-if="isPrediction && isthb">
+                        <i :class="[`n_${itemthb}`]" v-for="(itemthb,indexthb) in item.thb"
+                            :key="indexthb">{{itemthb}}</i>
+                    </div>
+                    <div v-if="isPrediction && istbRen">
+                        <i :class="[`n_${itemtbRen}`]" v-for="(itemtbRen,indextbRen) in item.tbRen"
+                            :key="indextbRen">{{itemtbRen}}</i>
+                    </div>
+                    <div v-if="isPrediction && isthbRen">
+                        <i :class="[`n_${itemthbRen}`]" v-for="(itemthbRen,indexthbRen) in item.thbRen"
+                            :key="indexthbRen">{{itemthbRen}}</i>
+                    </div>
+                    <div v-if="item.cycleid_time!='--'">
+                        <i :class="[`n_${item.b1}`]">{{item.b1}}</i>
+                        <i :class="[`n_${item.b2}`]">{{item.b2}}</i>
+                        <i :class="[`n_${item.b3}`]">{{item.b3}}</i>
+                        <i :class="[`n_${item.b4}`]">{{item.b4}}</i>
+                        <i :class="[`n_${item.b5}`]">{{item.b5}}</i>
+                        <i :class="[`n_${item.b6}`]">{{item.b6}}</i>
+                        <i :class="[`n_${item.b7}`]">{{item.b7}}</i>
+                        <i :class="[`n_${item.b8}`]">{{item.b8}}</i>
+                        <i :class="[`n_${item.b9}`]">{{item.b9}}</i>
+                        <i :class="[`n_${item.b10}`]">{{item.b10}}</i>
+                    </div>
+                </span>
+            </div>
+        </div>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                api: 'http://111.67.196.26:12', //不带'/'符号
+                isPrediction: false, //猜测的数据隐藏或现实
+                isRtb: false, //二组反卜
+                istb: false,//二组卜
+                istbRen: false,//二人
+                isRthb: false,//三组反卜
+                isthb: false, //三组卜
+                isthbRen: false,//三人
+                playStr: 'pkt', //切换类型
+                dataArr: [],
+                timeArr: [], //开最新一期的计时器
+                _this: null,
+                tpData: [], //模板上渲染的数据
+                tpTmpData: [], //模板渲染的中间临时数据
+            },
+            mounted() {
+                _this = this;
+                _this.clearTimer(_this.timeArr);
+                this.$nextTick(() => {
+                    _this.initPlayType();
+                    _this.changeTypeNet(_this.playStr);
+                });
+            },
+            methods: {
+                initPlayType() {
+                    _this.playStr = _this.isEmpty(window.localStorage.getItem('playType')) ? 'pkt' : window.localStorage.getItem('playType');
+                },
+                onChangeType(type) {
+                    if (this.playStr == type) {
+                        return;
+                    }
+                    window.localStorage.setItem("playType", type);
+                    this.playStr = type;
+                    _this.clearTimer(_this.timeArr);
+                    this.changeTypeNet(type);
+                },
+                phpTimeToYMN(value, args = "p") { //php的时间戳转为时间
+                    let str = parseInt(value) * 1000; //将php时间戳转化为整形并乘以1000
+                    let newDate = new Date(str);
+                    let year = newDate.getFullYear(); //取年份
+                    let month = newDate.getMonth() + 1; //取月份
+                    let monthStr = "";
+                    if (month < 10) {
+                        monthStr = "0" + month
+                    } else {
+                        monthStr = month + "";
+                    }
+                    let nowday = newDate.getDate(); //取天数
+                    let nowdayStr = "";
+                    if (nowday >= 0 && nowday <= 9) {
+                        nowdayStr = "0" + nowday;
+                    } else {
+                        nowdayStr = nowday + "";
+                    }
+                    let hour = newDate.getHours();
+                    let min = newDate.getMinutes();
+                    let minStr = "";
+                    if (min >= 0 && min <= 9) {
+                        minStr = "0" + min;
+                    } else {
+                        minStr = min + "";
+                    }
+                    let second = newDate.getSeconds();
+                    if (args == "t") { //只有时分秒
+                        return hour + ":" + minStr + ":" + second;
+                    } else if (args == "p") { //年月日，时分秒
+                        return year + "-" + monthStr + "-" + nowdayStr + " " + hour + ":" + minStr + ":" + second;
+                    }
+                    return year + "-" + monthStr + "-" + nowdayStr; //默认是年月日
+                },
+                isEmpty(obj) {
+                    if (typeof obj === "undefined" || obj === null || obj === "Null" || obj === "null" || obj === "" || JSON.stringify(
+                        obj) === '{}') {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+                clearTimer(timer, isTimeOut = false) {
+                    //清除计时器，并清空数据
+                    if (!_this.isEmpty(timer) && timer.length > 0) {
+                        for (let i = 0; i < timer.length; i++) {
+                            if (isTimeOut) {
+                                clearTimeout(timer[i]);
+                            } else {
+                                clearInterval(timer[i]);
+                            }
+                            timer[i] = null;
+                        }
+                    }
+                },
+                onRepair() { //修复错误的数据(只当天)
+                    $.post(_this.api + '/api/repair/lotcode/' + _this.playStr, {}, function (data) {
+                        data = JSON.parse(data)
+                        if (data.code == 200) {
+                            window.location.reload();
+                        } else {
+                            alert("请" + data.data + "后再刷新");
+                        }
+                    });
+                },
+                loadLast(type) { //计时加载最新一期20s一次
+                    let timer = setInterval(function () {
+                        $.post(_this.api + '/api/lastData/lotcode/' + type, {}, function (data) {
+                            data = JSON.parse(data)
+                            if (data.code == 200) {
+                                if (!_this.isEmpty(data.data) && data.data.length == 1) {
+                                    if (parseInt(data.data[0].cycleid) <= parseInt(_this.dataArr[0]['cycleid'])) {
+                                        return;
+                                    }
+                                    //再计算
+                                    _this.dataArr = data.data.concat(_this.dataArr);
+                                    _this.calcPre(_this.dataArr);
+                                    //播放提示音
+                                    let my_audio = document.getElementById("my_audio");
+                                    my_audio.play();
+                                }
+                            }
+                        });
+                    }, 20000);
+                    _this.timeArr.push(timer);
+                },
+                changeTypeNet(type) {
+                    $.post(_this.api + '/api/allData/lotcode/' + type, {}, function (data) {
+                        data = JSON.parse(data)
+                        if (data.code == 200) {
+                            _this.dataArr = data.data;
+                            _this.calcPre(data.data);
+                            _this.loadLast(type);
+                        }
+                    });
+                },
+                reTwoBu($ar1, $ar2) { //二组分析反卜法
+                    let resArr = [];
+                    for ($i = 0; $i < 10; $i++) { //以预测的数据为基准
+                        resArr[$i] = "";
+                        if ($i > 1) {
+                            $h1 = parseInt($ar2[$i - 2]) + parseInt($ar1[$i - 1]);
+                            $h1v = 10 - $h1 % 10;
+                            $h2 = parseInt($ar2[$i]) + parseInt($ar1[$i]);
+                            $h2v = 10 - $h2 % 10;
+                            if ($h1v === $h2v && ($h1 + $h1v) % 10 === 0) {
+                                resArr[$i] = $h1v;
+                            }
+                        }
+                    }
+                    return resArr;
+                },
+                twoBu($ar1, $ar2) { //二组分析卜法
+                    let resArr = [];
+                    for ($i = 0; $i < 10; $i++) {//以$ar2为基准
+                        resArr[$i] = "";
+                        if ($i + 2 < 10) {
+                            $hh1 = parseInt($ar2[$i]) + parseInt($ar1[$i]);
+                            $hh1v = 10 - $hh1 % 10;
+                            $hh2 = parseInt($ar2[$i + 2]) + parseInt($ar1[$i + 1]);
+                            $hh2v = 10 - $hh2 % 10;
+                            if ($hh1v === $hh2v && ($hh1 + $hh1v) % 10 === 0) {
+                                resArr[$i] = $hh1v;
+                            }
+                        }
+                    }
+                    return resArr;
+                },
+                twoRen($ar1, $ar2) { //二组人法
+                    let resArr = [];
+                    for ($i = 0; $i < 10; $i++) {//以$ar2为基准
+                        resArr[$i] = "";
+                        if ($i > 1 && $i + 2 < 10) {
+                            $hh1 = parseInt($ar2[$i - 2]) + parseInt($ar1[$i - 1]);
+                            $hh1v = 10 - $hh1 % 10;
+                            $hh2 = parseInt($ar2[$i + 2]) + parseInt($ar1[$i + 1]);
+                            $hh2v = 10 - $hh2 % 10;
+                            if ($hh1v === $hh2v && ($hh1 + $hh1v) % 10 === 0) {
+                                resArr[$i] = $hh1v;
+                            }
+                        }
+                    }
+                    return resArr;
+                },
+                reThreeBu($ar1, $ar2, $ar3) { //三组分析反卜法
+                    let resArr = [];
+                    for ($i = 0; $i < 10; $i++) { //以预测的数据为基准
+                        resArr[$i] = "";
+                        if ($i > 2) {
+                            $h1 = parseInt($ar2[$i - 2]) + parseInt($ar1[$i - 1]);
+                            $h1v = 10 - $h1 % 10;
+                            $h2 = parseInt($ar2[$i]) + parseInt($ar1[$i]);
+                            $h2v = 10 - $h2 % 10;
+                            if ($h1v === $h2v && ($h1 + $h1v) % 10 === 0) {
+                                if (parseInt($ar3[$i - 3]) === $h1v || parseInt($ar3[$i]) === $h1v) {
+                                    resArr[$i] = $h1v
+                                }
+                            }
+                        }
+                    }
+                    return resArr;
+                },
+                threeBu($ar1, $ar2, $ar3) {//三组分析卜法
+                    let resArr = [];
+                    for ($i = 0; $i < 10; $i++) { //以$ar3为基准
+                        resArr[$i] = "";
+                        if ($i + 2 < 10) {
+                            $hh1 = parseInt($ar2[$i]) + parseInt($ar1[$i]);
+                            $hh1v = 10 - $hh1 % 10;
+                            $hh2 = parseInt($ar2[$i + 2]) + parseInt($ar1[$i + 1]);
+                            $hh2v = 10 - $hh2 % 10;
+                            if ($hh1v === $hh2v && ($hh1 + $hh1v) % 10 === 0) {
+                                if ($i != 7) {
+                                    if ($hh1v === parseInt($ar3[$i]) || $hh1v === parseInt($ar3[$i + 3])) {
+                                        resArr[$i] = $hh1v;
+                                    }
+                                } else {
+                                    if ($hh1v === parseInt($ar3[$i])) {
+                                        resArr[$i] = $hh1v;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return resArr;
+                },
+                threeRen($ar1, $ar2, $ar3) { //三组人法
+                    let resArr = [];
+                    for ($i = 0; $i < 10; $i++) {
+                        resArr[$i] = "";
+                        if ($i >= 3 && $i <= 7) {
+                            $h1 =  parseInt($ar2[$i - 2]) + parseInt($ar1[$i - 1]);
+                            $h1v = 10 - $h1 % 10;
+                            $h2 =  parseInt($ar2[$i + 2]) + parseInt($ar1[$i + 1]);
+                            $h2v = 10 - $h2 % 10;
+                            if ($h1v === $h2v && ($h1 + $h1v) % 10 === 0 && $ar3[$i-3]==$h1v) {
+                                resArr[$i] = $h1v
+                            }
+                        }
+                    }
+                    return resArr
+                },
+                calcPre(arr) { //开始计算
+                    //console.log("所有值-", arr);
+                    let deailArr = [];//处理后的数据
+                    let tempTwoArr = [];//二组
+                    let reTwoBuArr = [];
+                    let twoBuArr = [];
+                    let twoRenArr = []; //二人
+                    let tempThreeArr = [];//三组
+                    let reThreeBuArr = [];
+                    let threeBuArr = [];
+                    let threeRenArr = []; //三人
+                    for (let i = 0; i < arr.length; i++) {
+                        let temp = [];
+                        let temp2 = [];
+                        let a1 = [];
+                        let a2 = [];
+                        if (i > 0) {
+                            a1 = arr[i - 1];
+                            a2 = arr[i];
+                            temp = [[a1['b1'], a1['b2'], a1['b3'], a1['b4'], a1['b5'], a1['b6'], a1['b7'], a1['b8'], a1['b9'], a1['b10']], [a2['b1'], a2['b2'], a2['b3'], a2['b4'], a2['b5'], a2['b6'], a2['b7'], a2['b8'], a2['b9'], a2['b10']]]
+                            tempTwoArr.push(temp);
+                        }
+                        let a11 = [];
+                        let a22 = [];
+                        let a33 = [];
+                        if (i > 1) {
+                            a11 = arr[i - 2];
+                            a22 = arr[i - 1];
+                            a33 = arr[i];
+                            temp2 = [[a11['b1'], a11['b2'], a11['b3'], a11['b4'], a11['b5'], a11['b6'], a11['b7'], a11['b8'], a11['b9'], a11['b10']], [a22['b1'], a22['b2'], a22['b3'], a22['b4'], a22['b5'], a22['b6'], a22['b7'], a22['b8'], a22['b9'], a22['b10']], [a33['b1'], a33['b2'], a33['b3'], a33['b4'], a33['b5'], a33['b6'], a33['b7'], a33['b8'], a33['b9'], a33['b10']]];
+                            tempThreeArr.push(temp2);
+                        }
+                    }
+                    for (let i = 0; i < tempTwoArr.length; i++) { //二组数据处理
+                        reTwoBuArr.push(this.reTwoBu(tempTwoArr[i][0], tempTwoArr[i][1]));
+                        twoBuArr.push(this.twoBu(tempTwoArr[i][0], tempTwoArr[i][1]));
+                        twoRenArr.push(this.twoRen(tempTwoArr[i][0], tempTwoArr[i][1]))
+                    }
+                    for (let i = 0; i < tempThreeArr.length; i++) { //三组数据处理
+                        reThreeBuArr.push(this.reThreeBu(tempThreeArr[i][0], tempThreeArr[i][1], tempThreeArr[i][2]));
+                        threeBuArr.push(this.threeBu(tempThreeArr[i][0], tempThreeArr[i][1], tempThreeArr[i][2]));
+                        threeRenArr.push(this.threeRen(tempThreeArr[i][0], tempThreeArr[i][1], tempThreeArr[i][2]));
+                    }
+                    //将所有的数据给拼接
+                    let tempObj = {};
+                    if (arr.length > 2) { //最少三个开奖
+                        for (let i = 0; i < arr.length + 1; i++) {
+                            let rtb = [], tb = [], tbRen = [];
+                            if (i < arr.length - 1) {
+                                rtb = reTwoBuArr[i];
+                                tb = twoBuArr[i];
+                                tbRen = twoRenArr[i]
+                            }
+                            let rthb = [], thb = [], thbRen = [];
+                            if (i < arr.length - 2) {
+                                rthb = reThreeBuArr[i];
+                                thb = threeBuArr[i];
+                                thbRen = threeRenArr[i]
+                            }
+                            if (i == 0) {
+                                tempObj = { "cycleid": "预测", "cycleid_time": "--", "b1": '', "b2": "", "b3": "", "b4": "", "b5": "", "b6": "", "b7": "", "b8": "", "b9": "", "b10": "", "rtb": rtb, "tb": tb, "tbRen": tbRen, "rthb": rthb, "thb": thb, "thbRen": thbRen };
+                            } else {
+                                tempObj = { "cycleid": arr[i - 1]['cycleid'], "cycleid_time": _this.phpTimeToYMN(arr[i - 1]['cycleid_time']), "b1": arr[i - 1]['b1'], "b2": arr[i - 1]['b2'], "b3": arr[i - 1]['b3'], "b4": arr[i - 1]['b4'], "b5": arr[i - 1]['b5'], "b6": arr[i - 1]['b6'], "b7": arr[i - 1]['b7'], "b8": arr[i - 1]['b8'], "b9": arr[i - 1]['b9'], "b10": arr[i - 1]['b10'], "rtb": rtb, "tb": tb, "tbRen": tbRen, "rthb": rthb, "thb": thb, "thbRen": thbRen };
+                            }
+                            deailArr.push(tempObj)
+                        }
+                    } else { //直接都为空处理
+
+                    }
+                    _this.tpData = deailArr;
+                    //console.log("处理后-", deailArr);
+                },
+                onFold() { //折叠
+
+                },
+                onRefresh() {
+                    window.location.reload();
+                },
+                onRefreshThree() {
+                    $.post(_this.api + '/api/forceThreeDay/lotcode/' + _this.playStr, {}, function (data) {
+                        data = JSON.parse(data)
+                        if (data.data == "ok") {
+                            window.location.reload();
+                        } else {
+                            alert("请" + data.data + "后重试");
+                        }
+                    });
+                }
+                //
+            },
+        });
+    </script>
+</body>
+
+</html>

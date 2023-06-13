@@ -1,0 +1,23 @@
+* { text-decoration: none; list-style: none; padding: 0px; margin: 0px; font-style: normal; font-size: 14px; }
+body { overflow-x: hidden; }
+.header { width: 100%; position: fixed; height: 100px; top: 0px; border-bottom: 1px solid #E8E9EC; z-index: 1; background: #fff; }
+.header > div { display: -webkit-box; display: flex; -webkit-box-align: center; align-items: center; height: 50px; }
+.header .btn { border-radius: 5px; height: 30px; line-height: 30px; display: inline-block; padding: 0px 3px; color: #fff; background: gray; margin-left: 10px; cursor: pointer; }
+.header .btn.btn-t { color: gray; background: #fff; border: 1px solid red; position: absolute; right: 10px; }
+.header .btn.active { background: red; }
+.content { margin-top: 100px; position: relative; }
+.content .item { display: -webkit-box; display: flex; -webkit-box-align: center; align-items: center; padding: 6px 0px; border-bottom: 1px solid #E8E9EC; }
+.content .item span.time { width: 130px; font-size: 12px; text-align: center; display: inline-block; }
+.content .item span.kj > div { margin-bottom: 2px; display: -webkit-box; display: flex; -webkit-box-align: center; align-items: center; }
+.n_empty, .n_ { width: 26px; height: 26px; display: inline-block; text-indent: 9999rem; background-size: 100%; background: url("../images/tm_bg.jpg") repeat; }
+.n_1, .n_2, .n_3, .n_4, .n_5, .n_6, .n_7, .n_8, .n_9, .n_10 { width: 26px; height: 26px; display: inline-block; text-indent: 9999rem; }
+.n_1 { background-size: 100%; background: url("../images/pk.png") 0 0 no-repeat; }
+.n_2 { background-size: 100%; background: url("../images/pk.png") -36px 0 no-repeat; }
+.n_3 { background-size: 100%; background: url("../images/pk.png") -71px 0 no-repeat; }
+.n_4 { background-size: 100%; background: url("../images/pk.png") -107px 0 no-repeat; }
+.n_5 { background-size: 100%; background: url("../images/pk.png") -142px 0 no-repeat; }
+.n_6 { background-size: 100%; background: url("../images/pk.png") -178px 0 no-repeat; }
+.n_7 { background-size: 100%; background: url("../images/pk.png") -213px 0 no-repeat; }
+.n_8 { background-size: 100%; background: url("../images/pk.png") -249px 0 no-repeat; }
+.n_9 { background-size: 100%; background: url("../images/pk.png") -284px 0 no-repeat; }
+.n_10 { background-size: 100%; background: url("../images/pk.png") -320px 0 no-repeat; }
